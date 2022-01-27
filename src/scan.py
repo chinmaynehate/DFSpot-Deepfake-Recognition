@@ -7,7 +7,6 @@ import sys
 from scipy.special import expit
 import matplotlib.pyplot as plt
 import torch
-print("1")
 sys.path.append('..')
 
 net_choices = ['TimmV2', 'TimmV2ST', 'ViT', 'ViTST']
@@ -24,10 +23,10 @@ net_class = getattr(fornet, net_name)
 model_path = "../models/" + dataset + "_" + "v2.pth"
 
 
-print("2")
+
 net: FeatureExtractor = net_class().eval().to(device)
 net.load_state_dict(torch.load(model_path, map_location='cpu')['net'])
-print("3")
+
 
 transf = utils.get_transformer(
     face_policy, face_size, net.get_normalizer(), train=False)
@@ -42,7 +41,7 @@ def video_read_fn(x): return videoreader.read_frames(
 
 
 face_extractor = FaceExtractor(video_read_fn=video_read_fn, facedet=facedet)
-print("4")
+
 
 
 video_paths = glob.glob('../sample_videos/ffpp/real/**/*.mp4', recursive=True)
