@@ -1,10 +1,12 @@
-
+from glob import glob
+import os.path
 from pprint import pprint
 from typing import Iterable, List
 import albumentations as A
 import cv2
 import numpy as np
 import scipy
+from sklearn import datasets
 import torch
 from PIL import Image
 from albumentations.pytorch import ToTensorV2
@@ -12,7 +14,15 @@ from matplotlib import pyplot as plt
 from torch import nn as nn
 from torchvision import transforms
 import itertools
+from architectures import fornet
+from architectures.fornet import FeatureExtractor
+from blazeface import FaceExtractor, BlazeFace, VideoReader
+import pandas as pd
+from tqdm import tqdm
 
+formats = ['image','video']
+models = ['TimmV2','TimmV2ST','ViT','ViTST']
+datasets = ['ffpp','dfdc','celeb']
 
 
 def get_transformer(face_policy: str, patch_size: int, net_normalizer: transforms.Normalize, train: bool):
@@ -107,3 +117,89 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
 
+
+    
+def get_video_paths(data_dir,num_videos):
+    video_paths = glob(data_dir + "/**/*.mp4",recursive=True)
+    video_idxs = [x for x in range(0,num_videos)]  # if num_videos is 3, then video_idxs = [0,1,2] i.e we will test videos at index 0,1,2 in file_names
+    file_names = []
+    for i in video_paths:
+        file_names.append(os.path.basename(i))
+    file_names.sort()
+    return file_names, video_idxs
+
+def get_model_paths(model,model_dir,dataset,choices):
+    model_paths = glob(  model_dir + '/**/*.pth', recursive=True)
+    models_for_dataset = []
+    for i in model_paths:
+        if(i.split("/")[-1].startswith(dataset)):
+            models_for_dataset.append(i)
+    model_paths = models_for_dataset
+    a = []
+    for i in model_paths:
+        if( choices[os.path.basename(i).split(".")[0].split("_")[1]] in model ):
+            a.append(i)
+    model_paths = a
+    return model_paths    
+
+
+
+def load_weights(model_paths,choices,device):
+    model_list = []
+    for i in tqdm(model_paths, desc="Loading Models"):
+        net_name = choices[i.split("/")[-1].split("_")[1].split(".")[0]]
+        net_class = getattr(fornet, net_name)
+        net: FeatureExtractor = net_class().eval().to(device)
+        net.load_state_dict(torch.load(
+            i, map_location='cpu')['net'])
+        model_list.append(net)
+    return model_list
+
+
+
+def load_face_extractor(blazeface_dir,device,fpv):
+    
+    facedet = BlazeFace().to(device)
+    facedet.load_weights(blazeface_dir+"blazeface.pth")
+    facedet.load_anchors(blazeface_dir+"anchors.npy")
+    
+    videoreader = VideoReader(verbose=False)
+    def video_read_fn(x): return videoreader.read_frames(
+    x, num_frames=fpv)
+    
+    return FaceExtractor(video_read_fn=video_read_fn, facedet=facedet)
+    
+
+def extract_faces(data_dir,file_names,video_idxs,transformer,face_extractor,num_videos,fpv):
+    faces = face_extractor.process_videos(input_dir=data_dir, filenames=file_names, video_idxs=video_idxs)
+
+    faces_frames = [fpv*x for x in range(0, num_videos+1)]   # [0,32,64,96]
+
+    faces_hc = torch.stack([transformer(image=frame['faces'][0])['image'] for frame in faces if len(frame['faces'])])
+    
+    return faces_hc, faces_frames
+    
+    
+def predict(ensemble_models,data_dir,file_names,video_idxs,num_videos,faces,faces_frames,model,save_csv=True,true_class=False):
+    predictions = {}
+    with torch.no_grad():
+        for i in tqdm(range(0, num_videos),desc='Predicting: '):  # (0,3) i.e 0,1,2
+            score = ensemble_models(faces[faces_frames[i]:faces_frames[i+1]])
+            if(not true_class):
+                predictions[data_dir+file_names[video_idxs[i]]] = [score, {'ensemble_score': sum(score.values())/(len(model))  }, {
+                    'predicted_class': 'real' if sum(score.values())/(len(model)) < 0.3 else 'fake'}]
+            else:
+                predictions[data_dir+file_names[video_idxs[i]]] = [score, {'ensemble_score': sum(score.values())/(len(model))  }, {
+                    'predicted_class': 'real' if sum(score.values())/(len(model)) < 0.3 else 'fake', 'true_class': input_dir.split("/")[3]}]
+    if(save_csv):
+        pclass = []
+        for preds in predictions:
+            predicted_class = predictions[preds][2]['predicted_class']
+            pclass.append(predicted_class)
+        data = {'video_path': [x for x in predictions.keys()],
+               'prediction':  pclass   } 
+        df = pd.DataFrame(data)
+        df.to_csv('predictions.csv')
+        print("Predictions saved to predictions.csv")
+    return predictions
+    

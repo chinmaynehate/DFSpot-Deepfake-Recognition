@@ -7,7 +7,7 @@ import torch
 from PIL import Image
 
 from blazeface import BlazeFace
-
+from tqdm import tqdm
 
 class FaceExtractor:
     """Wrapper for face extraction workflow."""
@@ -138,7 +138,7 @@ class FaceExtractor:
         tiles = []
         resize_info = []
 
-        for video_idx in video_idxs:
+        for video_idx in tqdm(video_idxs,desc="Extracting faces: "):
             # Read the full-size frames from this video.
             filename = filenames[video_idx]
             video_path = os.path.join(input_dir, filename)
