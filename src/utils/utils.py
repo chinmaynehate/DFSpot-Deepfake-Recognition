@@ -1,4 +1,5 @@
 from glob import glob
+import sys
 import os.path
 from pprint import pprint
 from typing import Iterable, List
@@ -19,6 +20,9 @@ from architectures.fornet import FeatureExtractor
 from blazeface import FaceExtractor, BlazeFace, VideoReader
 import pandas as pd
 from tqdm import tqdm
+#from tqdm import tqdm_notebook as tqdm
+
+
 
 formats = ['image','video']
 models = ['TimmV2','TimmV2ST','ViT','ViTST']
@@ -190,7 +194,7 @@ def predict(ensemble_models,data_dir,file_names,video_idxs,num_videos,faces,face
                     'predicted_class': 'real' if sum(score.values())/(len(model)) < 0.3 else 'fake'}]
             else:
                 predictions[data_dir+file_names[video_idxs[i]]] = [score, {'ensemble_score': sum(score.values())/(len(model))  }, {
-                    'predicted_class': 'real' if sum(score.values())/(len(model)) < 0.3 else 'fake', 'true_class': input_dir.split("/")[3]}]
+                    'predicted_class': 'real' if sum(score.values())/(len(model)) < 0.3 else 'fake', 'true_class': data_dir.split("/")[3]}]
     if(save_csv):
         pclass = []
         for preds in predictions:

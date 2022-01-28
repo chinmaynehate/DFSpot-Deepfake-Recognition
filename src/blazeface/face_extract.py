@@ -5,9 +5,11 @@ import cv2
 import numpy as np
 import torch
 from PIL import Image
-
+import sys
 from blazeface import BlazeFace
 from tqdm import tqdm
+#from tqdm import tqdm_notebook as tqdm
+
 
 class FaceExtractor:
     """Wrapper for face extraction workflow."""
