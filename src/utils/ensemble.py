@@ -2,8 +2,9 @@ import torch
 from torch import nn as nn
 from scipy.special import expit
 
+
 class Ensemble(nn.Module):
-    def __init__(self, models,device):
+    def __init__(self, models, device):
         super(Ensemble, self).__init__()
         self.models = nn.ModuleList(models)
         self.weightage = [1, 1, 1, 1]
@@ -17,9 +18,8 @@ class Ensemble(nn.Module):
             score = expit(pred.mean())
             scores[model.__class__.__name__] = score
             preds[model.__class__.__name__] = expit(pred)
-        return scores,preds
+        return scores, preds
 
-    
 
-def ensemble(model_list,device):
-    return Ensemble(model_list,device).eval().to(device)    
+def ensemble(model_list, device):
+    return Ensemble(model_list, device).eval().to(device)
