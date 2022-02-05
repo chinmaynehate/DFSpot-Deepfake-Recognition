@@ -1,20 +1,25 @@
 import os
 from typing import Tuple, List
-
 import cv2
 import numpy as np
 import torch
 from PIL import Image
 import sys
 from blazeface import BlazeFace
-from tqdm import tqdm
+#from tqdm import tqdm
 #from tqdm import tqdm_notebook as tqdm
+import sys
+IN_COLAB = 'google.colab' in sys.modules
+if(IN_COLAB):
+    from tqdm import tqdm_notebook as tqdm
+elif(not IN_COLAB):
+    from tqdm import tqdm
 
 
 class FaceExtractor:
     """Wrapper for face extraction workflow."""
 
-    def __init__(self, video_read_fn = None, facedet: BlazeFace = None):
+    def __init__(self, video_read_fn=None, facedet: BlazeFace = None):
         """Creates a new FaceExtractor.
 
         Arguments:
@@ -36,9 +41,11 @@ class FaceExtractor:
         """
 
         if img is not None and path is not None:
-            raise ValueError('Only one argument between path and img can be specified')
+            raise ValueError(
+                'Only one argument between path and img can be specified')
         if img is None and path is None:
-            raise ValueError('At least one argument between path and img must be specified')
+            raise ValueError(
+                'At least one argument between path and img must be specified')
 
         target_size = self.facedet.input_size
 
@@ -48,7 +55,8 @@ class FaceExtractor:
             img = np.asarray(img)
 
         # Split the frames into several tiles. Resize the tiles to 128x128.
-        tiles, resize_info = self._tile_frames(np.expand_dims(img, 0), target_size)
+        tiles, resize_info = self._tile_frames(
+            np.expand_dims(img, 0), target_size)
         # tiles has shape (num_tiles, target_size, target_size, 3)
         # resize_info is a list of four elements [resize_factor_y, resize_factor_x, 0, 0]
 
@@ -57,21 +65,24 @@ class FaceExtractor:
         detections = self.facedet.predict_on_batch(tiles, apply_nms=False)
 
         # Convert the detections from 128x128 back to the original frame size.
-        detections = self._resize_detections(detections, target_size, resize_info)
+        detections = self._resize_detections(
+            detections, target_size, resize_info)
 
         # Because we have several tiles for each frame, combine the predictions
         # from these tiles. The result is a list of PyTorch tensors, but now one
         # for each frame (rather than each tile).
         num_frames = 1
         frame_size = (img.shape[1], img.shape[0])
-        detections = self._untile_detections(num_frames, frame_size, detections)
+        detections = self._untile_detections(
+            num_frames, frame_size, detections)
 
         # The same face may have been detected in multiple tiles, so filter out
         # overlapping detections. This is done separately for each frame.
         detections = self.facedet.nms(detections)
 
         # Crop the faces out of the original frame.
-        frameref_detections = self._add_margin_to_detections(detections[0], frame_size, 0.2)
+        frameref_detections = self._add_margin_to_detections(
+            detections[0], frame_size, 0.2)
         faces = self._crop_faces(img, frameref_detections)
         kpts = self._crop_kpts(img, detections[0], 0.3)
 
@@ -140,14 +151,15 @@ class FaceExtractor:
         tiles = []
         resize_info = []
 
-        for video_idx in tqdm(video_idxs,desc="Extracting faces: "):
+        for video_idx in tqdm(video_idxs, desc="Extracting faces: "):
             # Read the full-size frames from this video.
             filename = filenames[video_idx]
             video_path = os.path.join(input_dir, filename)
             result = self.video_read_fn(video_path)
 
             # Error? Then skip this video.
-            if result is None: continue
+            if result is None:
+                continue
 
             videos_read.append(video_idx)
 
@@ -157,7 +169,8 @@ class FaceExtractor:
             frames_read.append(my_idxs)
 
             # Split the frames into several tiles. Resize the tiles to 128x128.
-            my_tiles, my_resize_info = self._tile_frames(my_frames, target_size)
+            my_tiles, my_resize_info = self._tile_frames(
+                my_frames, target_size)
             tiles.append(my_tiles)
             resize_info.append(my_resize_info)
 
@@ -181,14 +194,16 @@ class FaceExtractor:
             offs += num_tiles
 
             # Convert the detections from 128x128 back to the original frame size.
-            detections = self._resize_detections(detections, target_size, resize_info[v])
+            detections = self._resize_detections(
+                detections, target_size, resize_info[v])
 
             # Because we have several tiles for each frame, combine the predictions
             # from these tiles. The result is a list of PyTorch tensors, but now one
             # for each frame (rather than each tile).
             num_frames = frames[v].shape[0]
             frame_size = (frames[v].shape[2], frames[v].shape[1])
-            detections = self._untile_detections(num_frames, frame_size, detections)
+            detections = self._untile_detections(
+                num_frames, frame_size, detections)
 
             # The same face may have been detected in multiple tiles, so filter out
             # overlapping detections. This is done separately for each frame.
@@ -196,7 +211,8 @@ class FaceExtractor:
 
             for i in range(len(detections)):
                 # Crop the faces out of the original frame.
-                frameref_detections = self._add_margin_to_detections(detections[i], frame_size, 0.2)
+                frameref_detections = self._add_margin_to_detections(
+                    detections[i], frame_size, 0.2)
                 faces = self._crop_faces(frames[v][i], frameref_detections)
                 kpts = self._crop_kpts(frames[v][i], detections[i], 0.3)
 
@@ -261,7 +277,8 @@ class FaceExtractor:
 
         num_h, num_v, split_size, x_step, y_step = self.get_tiles_params(H, W)
 
-        splits = np.zeros((num_frames * num_v * num_h, target_size[1], target_size[0], 3), dtype=np.uint8)
+        splits = np.zeros((num_frames * num_v * num_h,
+                          target_size[1], target_size[0], 3), dtype=np.uint8)
 
         i = 0
         for f in range(num_frames):
@@ -270,12 +287,14 @@ class FaceExtractor:
                 x = 0
                 for h in range(num_h):
                     crop = frames[f, y:y + split_size, x:x + split_size, :]
-                    splits[i] = cv2.resize(crop, target_size, interpolation=cv2.INTER_AREA)
+                    splits[i] = cv2.resize(
+                        crop, target_size, interpolation=cv2.INTER_AREA)
                     x += x_step
                     i += 1
                 y += y_step
 
-        resize_info = [split_size / target_size[0], split_size / target_size[1], 0, 0]
+        resize_info = [split_size / target_size[0],
+                       split_size / target_size[1], 0, 0]
         return splits, resize_info
 
     def get_tiles_params(self, H, W):
@@ -304,20 +323,24 @@ class FaceExtractor:
 
             # ymin, xmin, ymax, xmax
             for k in range(2):
-                detection[:, k * 2] = (detection[:, k * 2] * target_h - offset_y) * scale_h
-                detection[:, k * 2 + 1] = (detection[:, k * 2 + 1] * target_w - offset_x) * scale_w
+                detection[:, k * 2] = (detection[:, k * 2]
+                                       * target_h - offset_y) * scale_h
+                detection[:, k * 2 + 1] = (detection[:, k * 2 + 1]
+                                           * target_w - offset_x) * scale_w
 
             # keypoints are x,y
             for k in range(2, 8):
-                detection[:, k * 2] = (detection[:, k * 2] * target_w - offset_x) * scale_w
-                detection[:, k * 2 + 1] = (detection[:, k * 2 + 1] * target_h - offset_y) * scale_h
+                detection[:, k * 2] = (detection[:, k * 2]
+                                       * target_w - offset_x) * scale_w
+                detection[:, k * 2 + 1] = (detection[:, k * 2 + 1]
+                                           * target_h - offset_y) * scale_h
 
             projected.append(detection)
 
         return projected
 
     def _untile_detections(self, num_frames: int, frame_size: Tuple[int, int], detections: List[torch.Tensor]) -> List[
-        torch.Tensor]:
+            torch.Tensor]:
         """With N tiles per frame, there also are N times as many detections.
         This function groups together the detections for a given frame; it is
         the complement to tile_frames().
@@ -370,10 +393,14 @@ class FaceExtractor:
         """
         offset = torch.round(margin * (detections[:, 2] - detections[:, 0]))
         detections = detections.clone()
-        detections[:, 0] = torch.clamp(detections[:, 0] - offset * 2, min=0)  # ymin
-        detections[:, 1] = torch.clamp(detections[:, 1] - offset, min=0)  # xmin
-        detections[:, 2] = torch.clamp(detections[:, 2] + offset, max=frame_size[1])  # ymax
-        detections[:, 3] = torch.clamp(detections[:, 3] + offset, max=frame_size[0])  # xmax
+        detections[:, 0] = torch.clamp(
+            detections[:, 0] - offset * 2, min=0)  # ymin
+        detections[:, 1] = torch.clamp(
+            detections[:, 1] - offset, min=0)  # xmin
+        detections[:, 2] = torch.clamp(
+            detections[:, 2] + offset, max=frame_size[1])  # ymax
+        detections[:, 3] = torch.clamp(
+            detections[:, 3] + offset, max=frame_size[0])  # xmax
         return detections
 
     def _crop_faces(self, frame: np.ndarray, detections: torch.Tensor) -> List[np.ndarray]:
@@ -389,7 +416,8 @@ class FaceExtractor:
         """
         faces = []
         for i in range(len(detections)):
-            ymin, xmin, ymax, xmax = detections[i, :4].cpu().numpy().astype(np.int)
+            ymin, xmin, ymax, xmax = detections[i, :4].cpu(
+            ).numpy().astype(np.int)
             face = frame[ymin:ymax, xmin:xmax, :]
             faces.append(face)
         return faces
@@ -409,11 +437,13 @@ class FaceExtractor:
         faces = []
         for i in range(len(detections)):
             kpts = []
-            size = int(face_fraction * min(detections[i, 2] - detections[i, 0], detections[i, 3] - detections[i, 1]))
+            size = int(
+                face_fraction * min(detections[i, 2] - detections[i, 0], detections[i, 3] - detections[i, 1]))
             kpts_coords = detections[i, 4:16].cpu().numpy().astype(np.int)
             for kpidx in range(6):
                 kpx, kpy = kpts_coords[kpidx * 2:kpidx * 2 + 2]
-                kpt = frame[kpy - size // 2:kpy - size // 2 + size, kpx - size // 2:kpx - size // 2 + size, ]
+                kpt = frame[kpy - size // 2:kpy - size // 2 +
+                            size, kpx - size // 2:kpx - size // 2 + size, ]
                 kpts.append(kpt)
             faces.append(kpts)
         return faces
