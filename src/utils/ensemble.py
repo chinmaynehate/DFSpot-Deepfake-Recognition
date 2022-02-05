@@ -11,11 +11,13 @@ class Ensemble(nn.Module):
 
     def forward(self, x):
         scores = {}
+        preds = {}
         for i, model in enumerate(self.models):
             pred = model(x.to(self.device)).cpu().numpy().flatten()
             score = expit(pred.mean())
             scores[model.__class__.__name__] = score
-        return scores
+            preds[model.__class__.__name__] = expit(pred)
+        return scores,preds
 
     
 
