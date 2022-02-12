@@ -1,8 +1,39 @@
+#!/bin/bash 
+
 pip3 install gdown
-gdown https://drive.google.com/uc?id=1xnF7xwUitiXvkRYk1Y2hRRGKNrUrtlv0 #Sample videos
-gdown https://drive.google.com/uc?id=1hCZ9V1CnzjX9a33_uB3ZJMSqioGooFSS #Models
-unzip -qq sample_videos.zip -d .
+
+mkdir -p models
+mkdir -p sample_videos
+
+path=$PWD
+models="/models"
+sample_videos="/sample_videos"
+src="/src"
+utils="/src/utils"
+
+models_path=$path$models
+sample_videos_path=$path$sample_videos
+src_path=$path$src
+utils_path=$path$utils
+
+cd $models_path
+gdown https://drive.google.com/uc?id=1HK7bsDeY_wNW68JRImOrkX5ZLAFvquqe # celeb
+gdown https://drive.google.com/uc?id=1xx6XnfSWSvZEcwpvdrP-jsSHwHdMy02B # dfdc
+gdown https://drive.google.com/uc?id=1n-dHnoV4o5QIeRON1NzRkikYJggsmJrt # ffpp
+
+cd $sample_videos_path
+gdown https://drive.google.com/uc?id=134pojUQrObF5sSDqaR2BX1xMx_VZn4ZD # sample videos
+
+cd $utils_path
+python3 extract.py --f $models_path/celeb_models.zip $models_path/dfdc_models.zip $models_path/ffpp_models.zip --d $models_path
+python3 extract.py --f $sample_videos_path/sample_videos.zip --d $sample_videos_path
+
+cd $models_path
+rm -rf celeb_models.zip dfdc_models.zip ffpp_models.zip
+
+cd $sample_videos_path
 rm -rf sample_videos.zip
-unzip -qq models.zip -d .
-rm -rf models.zip
+mv  sample_videos/* .
+rm -rf sample_videos
+
 pip3 install -r requirements.txt
