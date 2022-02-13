@@ -77,10 +77,10 @@ PyTorch code for DFSpot, a framework
 ### Built With
 
 * [Python 3.6.9](https://www.python.org/)
-* [PyTorch](https://pytorch.org/)
-* [Timm](https://github.com/rwightman/pytorch-image-models)
-* [OpenCV](https://opencv.org/)
-* [Albumentations](https://albumentations.ai/)
+* [PyTorch 1.8.0](https://pytorch.org/)
+* [Timm 0.4.9](https://github.com/rwightman/pytorch-image-models)
+* [OpenCV 4.2](https://opencv.org/)
+* [Albumentations 0.5.2](https://albumentations.ai/)
 * [Blazeface](https://github.com/tensorflow/tfjs-models/tree/master/blazeface)
 
 
