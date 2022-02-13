@@ -325,7 +325,7 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
                         cv2.FONT_HERSHEY_SIMPLEX, 0.75, rgb, 2)
 
             cv2.putText(img, 'Fake Frames ' + str(fake_frames), (int(w/2)+int(w/6),
-                        int(h/2) + int(h/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
+                        int(h/2) + int(h/8)), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
             cv2.putText(img, 'Real Frames ' + str(real_frames), (int(w/2) + int(w/6),
                         int(h/2) + int(h/15)), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
             #cv2.putText(img, 'Real Frames Count: ' + str(real_frames), (500, int(h)/2), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
