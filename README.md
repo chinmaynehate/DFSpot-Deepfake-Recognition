@@ -84,9 +84,6 @@ PyTorch code for DFSpot, a framework
 * [Blazeface](https://github.com/tensorflow/tfjs-models/tree/master/blazeface)
 
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -158,8 +155,20 @@ Structure of DeepFake-Spot/ after running prerequisites and installation scripts
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-1. 
+1. By running setup.sh(during installation), few sample videos from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_videos/`. To check the authenticity of these videos, run:
+```sh
+python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ffpp/fake --dataset ffpp --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models --video_id 2 3 4 --annotate True --device 0 --output_dir output/  
+```
+The predictions are stored in `output/predictions.csv` and video with frame level annotations of predictions made by individual models and ensemble of models is stored in `output/` folder.
 
+2. Say you have three videos- video1.mp4, video2.mp4 and video3.mp4 and you want to check their authenticity. Place these three videos in the `sample_videos/` folder and run:
+```sh
+python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ --dataset ffpp --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models --video_id 0 1 2 --annotate True --device 0 --output_dir output/  
+```
+The predictions are stored in `output/predictions.csv` and video with frame level annotations of predictions made by individual models and ensemble of models is stored in `output/` folder.
+  
+
+ 
 _For more examples, please refer to [examples.sh](https://github.com/chinmaynehate/DeepFake-Spot/blob/master/examples.sh)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -180,27 +189,17 @@ If you have a suggestion that would make this better, please fork the repo and c
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-
-
-
-
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
 * [Deepware](https://github.com/deepware/deepfake-scanner)
-* []()
-* []()
-* []()
+* [Image and Sound Processing Lab - Politecnico di Milano](https://github.com/polimi-ispl/icpr2020dfdc)
+* [Triplet loss tutorial](https://omoindrot.github.io/triplet-loss)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
