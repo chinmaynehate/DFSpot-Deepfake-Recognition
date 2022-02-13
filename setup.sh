@@ -22,7 +22,7 @@ gdown https://drive.google.com/uc?id=1GhKJKKhYUwtvOSRIqOQ3DCiw6Cz2BOh6 # dfdc
 gdown https://drive.google.com/uc?id=1Kz4ls7ghGZuEsXrpRQeSCYl1er7cmj4Z # ffpp
 
 cd $sample_videos_path
-gdown https://drive.google.com/uc?id=134pojUQrObF5sSDqaR2BX1xMx_VZn4ZD # sample videos
+gdown https://drive.google.com/uc?id=1zbR_SyRVR6ZPDF-CWT5B8DN96YKuau1m # sample videos
 
 cd $utils_path
 python3 extract.py --f $models_path/celeb_models.zip $models_path/dfdc_models.zip $models_path/ffpp_models.zip --d $models_path
@@ -33,7 +33,5 @@ rm -rf celeb_models.zip dfdc_models.zip ffpp_models.zip
 
 cd $sample_videos_path
 rm -rf sample_videos.zip
-mv  sample_videos/* .
-rm -rf sample_videos
 
 pip3 install -r requirements.txt
