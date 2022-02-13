@@ -17,9 +17,9 @@ src_path=$path$src
 utils_path=$path$utils
 
 cd $models_path
-gdown https://drive.google.com/uc?id=1HK7bsDeY_wNW68JRImOrkX5ZLAFvquqe # celeb
-gdown https://drive.google.com/uc?id=1xx6XnfSWSvZEcwpvdrP-jsSHwHdMy02B # dfdc
-gdown https://drive.google.com/uc?id=1n-dHnoV4o5QIeRON1NzRkikYJggsmJrt # ffpp
+gdown https://drive.google.com/uc?id=1gVOsRnSuvObgzLItDoxNUQOvlH2xzr4h # celeb
+gdown https://drive.google.com/uc?id=1GhKJKKhYUwtvOSRIqOQ3DCiw6Cz2BOh6 # dfdc
+gdown https://drive.google.com/uc?id=1Kz4ls7ghGZuEsXrpRQeSCYl1er7cmj4Z # ffpp
 
 cd $sample_videos_path
 gdown https://drive.google.com/uc?id=134pojUQrObF5sSDqaR2BX1xMx_VZn4ZD # sample videos
