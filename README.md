@@ -52,6 +52,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#repo-file-structure">Repo file structure</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -68,7 +69,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-PyTorch code for DFSpot, a framework
+PyTorch code for DeepFake-Spot, an ensemble of models to determine if the input video is real or fake.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
