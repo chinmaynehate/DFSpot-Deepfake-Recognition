@@ -37,6 +37,22 @@
 
 </div>
 
+
+<table >
+<thead>
+  <tr>
+    <th "><img src="assets/gifs/celeb_fake.gif" alt="drawing" width="600" height="300"/> </th>
+    <th><img src="assets/gifs/ffpp_fake.gif" alt="drawing" width="600" height="300"/></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td  colspan="2">  <strong>Ensemble of 4 models produce the above results on test videos from datasets like Celeb-DF(v2), FaceForensics++ and DFDC </strong>  </td>
+  </tr>
+</tbody>
+</table>
+
+
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -55,11 +71,9 @@
         <li><a href="#repo-file-structure">Repo file structure</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#usage">Usage</a></li>    
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
