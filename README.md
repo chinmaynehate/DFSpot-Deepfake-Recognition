@@ -46,13 +46,17 @@
   </tr>
 </thead>
 <tbody>
-  <tr>
-    <td  colspan="2">  <strong>Ensemble of 4 models produce the above results on test videos from datasets like Celeb-DF(v2), FaceForensics++ and DFDC </strong>  </td>
+  
   </tr>
 </tbody>
 </table>
 
-
+<div align="center">                                                                                   
+    <strong >Ensemble of 4 models produce the above results on test videos from datasets like Celeb-DF(v2), FaceForensics++ and DFDC </strong> 
+                   <br/>
+</div>                                                                               
+                                                                                   
+<br/>                                                                                   
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
