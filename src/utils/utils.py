@@ -1,4 +1,5 @@
 from glob import glob
+import os
 import os.path
 from pprint import pprint
 from typing import Iterable, List
@@ -237,7 +238,9 @@ def fpv_list(vid_paths):
 
 
 def extract_predict_annotate(output_dir,ensemble_models,video_glob,video_idxs, transformer,blazeface_dir,device,model_list):
-    
+ 
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     facedet = BlazeFace().to(device)
     facedet.load_weights(blazeface_dir+"blazeface.pth")
     facedet.load_anchors(blazeface_dir+"anchors.npy")
@@ -394,7 +397,11 @@ def extract_predict_annotate(output_dir,ensemble_models,video_glob,video_idxs, t
     data = {'video_path': [x for x in predictions.keys()],
            'prediction':  pclass   } 
     df = pd.DataFrame(data)
-    df.to_csv(output_dir+'predictions.csv',mode='a',header=False)
+    
+    if os.path.exists(output_dir+'predictions.csv'):
+        df.to_csv(output_dir+'predictions.csv',mode='a',header=False)
+    else:
+        df.to_csv(output_dir+'predictions.csv')
     
     print("Annotated videos saved to "+output_dir)
     print("Predictions saved to " + output_dir + "predictions.csv")
