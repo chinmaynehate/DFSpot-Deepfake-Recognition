@@ -87,7 +87,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-PyTorch code for DeepFake-Spot, an ensemble of models to determine if the input video is real or fake.
+PyTorch code for DeepFake-Spot, an ensemble of models to determine if the input video is real or fake. This study proposes an ensemble-based metric learning approach based on a siamese network architecture, in which four models are created starting from a base network to identify deepfakes. This technique has been tested against publicly available datasets such as Celeb-DF (v2), FaceForensics++ and DFDC.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -137,8 +137,23 @@ Follow the Below Instructions for setting the project up on your local Machine. 
    ```sh
    cd DeepFake-Spot
    sudo chmod +x setup.sh
-   ./setup.sh
    ```
+   ```
+   ./setup.sh -m celeb
+   ```
+   or
+   ``` 
+   ./setup.sh -m dfdc
+   ```
+   or
+   ```
+   ./setup.sh -m ffpp
+   ```
+   or
+   ```
+   ./setup.sh -m all
+   ```
+                                
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -148,6 +163,7 @@ Follow the Below Instructions for setting the project up on your local Machine. 
 ### Repo file structure
 Structure of DeepFake-Spot/ after running prerequisites and installation scripts
 ```sh
+|-- assets # contains images & gifs for readme
 |-- examples.sh # contains example for running spot_deepfakes.py 
 |-- models # contains twelve .pth files. These are downloaded using gdown and extracted in setup.sh
 |   |-- celeb_v2.pth
@@ -155,6 +171,7 @@ Structure of DeepFake-Spot/ after running prerequisites and installation scripts
 |   |-- ffpp_v2.pth
 |-- README.md
 |-- requirements.txt
+|-- sample_output_videos # contains sample output videos that are obtained after running the code 
 |-- sample_videos # contains all the sample videos downloaded using gdown and extracted in setup.sh. Save the .mp4 files that have to be tested in this folder
 |   |-- abc.mp4 # video whose authenticity has to be tested
 |   |-- pqr.mp4 # video whose authenticity has to be tested
