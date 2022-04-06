@@ -1,10 +1,12 @@
 #!/bin/bash
-
+while getopts m: flag; do
+    case "${flag}" in
+    m) model_dataset=${OPTARG} ;;
+    esac
+done
 pip3 install gdown
-
+pip3 install --upgrade gdown
 mkdir -p models
-mkdir -p sample_videos
-mkdir -p sample_output_videos
 
 path=$PWD
 models="/models"
@@ -19,11 +21,7 @@ sample_output_videos_path=$path$sample_output_videos
 src_path=$path$src
 utils_path=$path$utils
 
-while getopts m: flag; do
-    case "${flag}" in
-    m) model_dataset=${OPTARG} ;;
-    esac
-done
+
 
 if [[ $model_dataset = "celeb" ]]; then
     echo "Models V2, V2ST, ViT & ViTST trained on: $model_dataset dataset will be downloaded"
@@ -96,19 +94,20 @@ if [[ $model_dataset = "all" ]]; then
 
 fi
 
-cd $sample_videos_path
+cd $path
 gdown https://drive.google.com/uc?id=1p51Usf4CFDOKhp9Sl4bkKQcaY1eKPsS8 || wget -c --load-cookies /tmp/cookies.txt "https://drive.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/uc?export=download&id=1p51Usf4CFDOKhp9Sl4bkKQcaY1eKPsS8' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1p51Usf4CFDOKhp9Sl4bkKQcaY1eKPsS8" -O sample_videos.zip && rm -rf /tmp/cookies.txt || echo " Download of sample videos failed. This happens as downloading a file from Google Drive is restricted to some limit. Try running this script after 24 hours or manually download the models."
 cd $utils_path
-python3 extract.py --f $sample_videos_path/sample_videos.zip --d $sample_videos_path
-cd $sample_videos_path
+python3 extract.py --f $path/sample_videos.zip --d $path
+cd $path
 rm -rf sample_videos.zip
 
-cd $sample_output_videos_path
+cd $path
 gdown https://drive.google.com/uc?id=1sNsjijol1a3Pft5M4h0K0OxgIn85Jkvm || wget -c --load-cookies /tmp/cookies.txt "https://drive.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/uc?export=download&id=1sNsjijol1a3Pft5M4h0K0OxgIn85Jkvm' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1sNsjijol1a3Pft5M4h0K0OxgIn85Jkvm" -O sample_output_videos.zip && rm -rf /tmp/cookies.txt || echo " Download of sample output videos failed. This happens as downloading a file from Google Drive is restricted to some limit. Try running this script after 24 hours or manually download the models."
 cd $utils_path
-python3 extract.py --f $sample_output_videos_path/sample_output_videos.zip --d $sample_output_videos_path
-cd $sample_output_videos_path
+python3 extract.py --f $path/sample_output_videos.zip --d $path
+cd $path
 rm -rf sample_output_videos.zip
 
 cd $path
 pip3 install -r requirements.txt
+
