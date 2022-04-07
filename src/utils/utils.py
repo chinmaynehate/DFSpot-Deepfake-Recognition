@@ -247,17 +247,28 @@ def extract_predict_annotate(output_dir,ensemble_models,video_glob,video_idxs, t
     videoreader = VideoReader(verbose=False)
     
     fpv = fpv_list(video_glob)
-    #print(fpv)
-    _video_idxs = len(video_idxs)
     
+    print("FPV",fpv)
+ 
+    
+    _video_idxs = len(video_idxs)
+
     # extract faces:
     predictions = {}
     predictions_with_frame_level_data = {}
     with torch.no_grad():
                 
-        to_skip = []
-        for vid in tqdm(video_idxs, desc = 'Predicting'):
-
+        no_faces = []
+        too_large = []
+        iterator = tqdm(video_idxs, desc = 'Predicting')
+        for vid in iterator:
+            iterator.update()
+            if(fpv[vid]>1000):
+                too_large.append(vid)
+                print(f"The video with id {vid} is too large to be processed. Hence, skipping it. Trim the video to limit FPV to 1000.")
+                iterator.close()
+                continue
+                
             def video_read_fn(x): return videoreader.read_frames(
                 x, num_frames=fpv[vid])
             face_extractor = FaceExtractor(video_read_fn=video_read_fn, facedet=facedet)
@@ -266,7 +277,9 @@ def extract_predict_annotate(output_dir,ensemble_models,video_glob,video_idxs, t
                 faces_hc = torch.stack([transformer(image=frame['faces'][0])['image']
                                for frame in faces if len(frame['faces'])])
             except:
-                to_skip.append(vid)
+                print(f"Could not detect faces in the video with id {vid}. Hence, skipping it.")
+                no_faces.append(vid)
+                iterator.close()
                 continue
             
             score,preds = ensemble_models(faces_hc[0:fpv[vid]])
@@ -275,16 +288,21 @@ def extract_predict_annotate(output_dir,ensemble_models,video_glob,video_idxs, t
             predictions[video_glob[vid]] = [score, {'ensemble_score': sum(score.values())/(len(model_list))}, {
                     'predicted_class': 'real' if sum(score.values())/(len(model_list)) < 0.3 else 'fake'}]
     
+    videos_to_skip = no_faces + list(set(too_large)-set(no_faces))  
+    
+    
+    for _video_to_skip in videos_to_skip:
+        video_idxs.remove(_video_to_skip)
         
-    for _skip in to_skip:
-        video_idxs.remove(_skip)
-
-    if(to_skip):
+    if(videos_to_skip):
         #print("Out of " + len(_video_idxs) " videos, detected faces in only " + len(video_idxs) + " videos")
-        print(f"Out of {_video_idxs} videos, detected faces in only {len(video_idxs)} videos")
-        
+        print(f"Skipped videos with id: {videos_to_skip}")
+    print("To skip:",videos_to_skip)
+    print("idxs:",video_idxs)
+    if(not len(video_idxs)):
+        return
     for ne in tqdm(video_idxs, desc='Annotating videos'):
-        if(ne in to_skip):
+        if(ne in videos_to_skip):
             continue
         frame_count = 0
         face_count = 0
