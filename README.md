@@ -205,7 +205,7 @@ The predictions are stored in `output/predictions.csv` and video with frame leve
   
 
  
-_For more examples, please refer to [examples.sh](https://github.com/chinmaynehate/DeepFake-Spot/blob/master/examples.sh)_
+**_For more examples, please refer to [examples.sh](https://github.com/chinmaynehate/DeepFake-Spot/blob/master/examples.sh)_**
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
