@@ -21,8 +21,6 @@ sample_output_videos_path=$path$sample_output_videos
 src_path=$path$src
 utils_path=$path$utils
 
-
-
 if [[ $model_dataset = "celeb" ]]; then
     echo "Models V2, V2ST, ViT & ViTST trained on: $model_dataset dataset will be downloaded"
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
@@ -110,4 +108,3 @@ rm -rf sample_output_videos.zip
 
 cd $path
 pip3 install -r requirements.txt
-

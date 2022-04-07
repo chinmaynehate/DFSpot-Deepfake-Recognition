@@ -1,7 +1,5 @@
 cd src
 
-
-
 : '
 Lets say you have 3 videos: a.mp4, b.mp4 & c.mp4. ou want to check their authenticity. In order to do so, place them in the sample_videos/ folder. 
 Now, you have 3 options: either use models trained on FFPP, DFDC or CelebDF dataset. 
@@ -20,13 +18,13 @@ These indexes 0,1,2 are used as --video_id argument while running the main code.
 '
 
 python3 spot_deepfakes.py \
---media_type video \
---data_dir ../sample_videos/ \
---dataset dfdc \
---model TimmV2 TimmV2ST ViT ViTST \
---model_dir ../models \
---video_id 0 1 2  \
---annotate True 
+    --media_type video \
+    --data_dir ../sample_videos/ \
+    --dataset dfdc \
+    --model TimmV2 TimmV2ST ViT ViTST \
+    --model_dir ../models \
+    --video_id 0 1 2 \
+    --annotate True
 
 : '
 In the above command, all the 3 videos i.e a.mp4, b.mp4 and c.mp4 are chosen via the --video_id argument. The --model argument specifies a list of
@@ -34,54 +32,48 @@ models that have to be ensembled in order to make predictions. The --data_dir ar
 saved. After running this code, the annotated video is stored in the src/output/ folder and the predictions are stored in src/output/predictions.csv
 '
 
-
-
 # Some other examples:
 python3 spot_deepfakes.py \
---media_type video \
---data_dir ../sample_videos/ffpp/fake \
---dataset ffpp \
---model ViT ViTST \
---model_dir ../models \
---video_id 1 2  \
---annotate True 
-
-
-python3 spot_deepfakes.py \
---media_type video \
---data_dir ../sample_videos/celeb/fake \
---dataset celeb \
---model TimmV2 TimmV2ST ViT ViTST \
---model_dir ../models \
---video_id 3  \
---annotate True 
-
+    --media_type video \
+    --data_dir ../sample_videos/ffpp/fake \
+    --dataset ffpp \
+    --model ViT ViTST \
+    --model_dir ../models \
+    --video_id 1 2 \
+    --annotate True
 
 python3 spot_deepfakes.py \
---media_type video \
---data_dir ../sample_videos/dfdc/real \
---dataset dfdc \
---model TimmV2ST ViTST \
---model_dir ../models \
---video_id 0 1   \
---annotate True 
-
-
-python3 spot_deepfakes.py \
---media_type video \
---data_dir ../sample_videos/ffpp/fake \
---dataset dfdc \
---model TimmV2 TimmV2ST ViT ViTST \
---model_dir ../models \
---video_id 2 3   \
---annotate True 
-
+    --media_type video \
+    --data_dir ../sample_videos/celeb/fake \
+    --dataset celeb \
+    --model TimmV2 TimmV2ST ViT ViTST \
+    --model_dir ../models \
+    --video_id 3 \
+    --annotate True
 
 python3 spot_deepfakes.py \
---media_type video \
---data_dir ../sample_videos/celeb/real \
---dataset ffpp \
---model ViT ViTST \
---model_dir ../models \
---video_id 1   \
---annotate True 
+    --media_type video \
+    --data_dir ../sample_videos/dfdc/real \
+    --dataset dfdc \
+    --model TimmV2ST ViTST \
+    --model_dir ../models \
+    --video_id 0 1 \
+    --annotate True
+
+python3 spot_deepfakes.py \
+    --media_type video \
+    --data_dir ../sample_videos/ffpp/fake \
+    --dataset dfdc \
+    --model TimmV2 TimmV2ST ViT ViTST \
+    --model_dir ../models \
+    --video_id 2 3 \
+    --annotate True
+
+python3 spot_deepfakes.py \
+    --media_type video \
+    --data_dir ../sample_videos/celeb/real \
+    --dataset ffpp \
+    --model ViT ViTST \
+    --model_dir ../models \
+    --video_id 1 \
+    --annotate True
