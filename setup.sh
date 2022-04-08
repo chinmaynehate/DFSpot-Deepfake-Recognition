@@ -11,12 +11,14 @@ mkdir -p models
 path=$PWD
 models="/models"
 sample_videos="/sample_videos"
+sample_images="/sample_images"
 src="/src"
 utils="/src/utils"
 sample_output_videos="/sample_output_videos"
 
 models_path=$path$models
 sample_videos_path=$path$sample_videos
+sample_images_path=$path$sample_images
 sample_output_videos_path=$path$sample_output_videos
 src_path=$path$src
 utils_path=$path$utils
@@ -91,6 +93,19 @@ if [[ $model_dataset = "all" ]]; then
     rm -rf ffpp_models.zip
 
 fi
+
+
+
+
+cd $path
+gdown https://drive.google.com/uc?id=1p5dDPK4U2X14I3UEcd8y49DYxPo6rZb6 || wget -c --load-cookies /tmp/cookies.txt "https://drive.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/uc?export=download&id=1p5dDPK4U2X14I3UEcd8y49DYxPo6rZb6' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1p5dDPK4U2X14I3UEcd8y49DYxPo6rZb6" -O sample_images.zip && rm -rf /tmp/cookies.txt || echo " Download of sample videos failed. This happens as downloading a file from Google Drive is restricted to some limit. Try running this script after 24 hours or manually download the models."
+cd $utils_path
+python3 extract.py --f $path/sample_images.zip --d $path
+cd $path
+rm -rf sample_images.zip
+
+
+
 
 cd $path
 gdown https://drive.google.com/uc?id=1p51Usf4CFDOKhp9Sl4bkKQcaY1eKPsS8 || wget -c --load-cookies /tmp/cookies.txt "https://drive.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/uc?export=download&id=1p51Usf4CFDOKhp9Sl4bkKQcaY1eKPsS8' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1p51Usf4CFDOKhp9Sl4bkKQcaY1eKPsS8" -O sample_videos.zip && rm -rf /tmp/cookies.txt || echo " Download of sample videos failed. This happens as downloading a file from Google Drive is restricted to some limit. Try running this script after 24 hours or manually download the models."

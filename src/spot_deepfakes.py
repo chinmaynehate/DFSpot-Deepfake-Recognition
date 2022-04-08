@@ -26,7 +26,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--media_type', type=str,
-                        help='Image or Video', choices=utils.formats, default='video')
+                        help='Image or Video', choices=['video', 'image'])
     parser.add_argument('--data_dir', type=str,
                         help='Path to the directory where image/video is stored. Eg: ../sample_videos/ffpp/real/', required=True)
     parser.add_argument('--dataset', type=str, help='Image/Video is from which dataset',
@@ -88,20 +88,31 @@ def main():
     transformer = utils.get_transformer(
         face_policy, face_size, models_loaded[0].get_normalizer(), train=False)
 
-    if(annotate):
-        predictions = utils.extract_predict_annotate(
-            output_dir, ensemble_models, video_glob, video_idxs, transformer, blazeface_dir, device, models_loaded)
+    if(media_type == 'video'):
+        if(annotate):
+            predictions = utils.extract_predict_annotate(
+                output_dir, ensemble_models, video_glob, video_idxs, transformer, blazeface_dir, device, models_loaded)
+            # print("Predictions:")
+            # pprint.pprint(predictions)
+        else:
+            face_extractor = utils.load_face_extractor(
+                blazeface_dir, device, fpv)
+            print('Face extractor Loaded!')
 
-    else:
-        face_extractor = utils.load_face_extractor(blazeface_dir, device, fpv)
-        print('Face extractor Loaded!')
+            faces, faces_frames = utils.extract_faces(
+                data_dir, file_names, video_idxs, transformer, face_extractor, num_videos, fpv)
+            print("Faces extracted and transformed!")
 
-        faces, faces_frames = utils.extract_faces(
-            data_dir, file_names, video_idxs, transformer, face_extractor, num_videos, fpv)
-        print("Faces extracted and transformed!")
+            predictions, predictions_frames = utils.predict(
+                ensemble_models, data_dir, file_names, video_idxs, num_videos, faces, faces_frames, model, save_csv=True, true_class=False)
+            # print("Predictions:")
+            # pprint.pprint(predictions)
 
-        predictions, predictions_frames = utils.predict(
-            ensemble_models, data_dir, file_names, video_idxs, num_videos, faces, faces_frames, model, save_csv=True, true_class=False)
+    elif(media_type == "image"):
+        img_path, img_names = utils.get_images_path(data_dir)
+
+        predictions = utils.test_on_images(img_path, img_names, transformer, blazeface_dir, device,
+                                           model, models_loaded, ensemble_models, json_path=output_dir+"img_predictions.json")
 
 
 if __name__ == '__main__':

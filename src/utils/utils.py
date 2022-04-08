@@ -19,8 +19,8 @@ from architectures import fornet
 from architectures.fornet import FeatureExtractor
 from blazeface import FaceExtractor, BlazeFace, VideoReader
 import pandas as pd
-
-
+from PIL import Image
+import json
 import sys
 IN_COLAB = 'google.colab' in sys.modules
 if(IN_COLAB):
@@ -433,3 +433,47 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
     print("Predictions saved to " + output_dir + "predictions.csv")
 
     return predictions
+
+
+def get_images_path(data_dir):
+    image_names = ['{0:04}'.format(num) + ".png" for num in range(0, 1000)]
+    all_image_paths = []
+    for i in range(0, 1000):
+        all_image_paths.append(data_dir+image_names[i])
+    return all_image_paths, image_names
+
+
+def test_on_images(path_of_images, imgs, transformer, blazeface_dir, device, model, models_loaded, ensemble_models, json_path):
+    facedet = BlazeFace().to(device)
+    facedet.load_weights(blazeface_dir+"blazeface.pth")
+    facedet.load_anchors(blazeface_dir+"anchors.npy")
+    face_extractor = FaceExtractor(facedet=facedet)
+    print("YO", model)
+    c = []
+    for i in tqdm(path_of_images, desc='Predicting'):
+        im = Image.open(i)
+        im_face = face_extractor.process_image(img=im)
+        im_face = im_face['faces'][0]
+        faces_t = torch.stack([transformer(image=im)['image']
+                              for im in [im_face]])
+
+        with torch.no_grad():
+            score, faces_pred = ensemble_models(faces_t.to(device))
+
+        ensemble_score = sum(list(score.values())) / len(model)
+
+        c.append(float(numberWithoutRounding(ensemble_score, 4)))
+
+    for a, b in enumerate(c):
+        if b <= 0.3:
+            c[a] = 'real'
+        else:
+            c[a] = 'fake'
+
+    result = dict(zip(imgs, c))
+
+    with open(json_path, "w") as outfile:
+        json.dump(result, outfile)
+
+    print(f"Prediction results are saved in {json_path}")
+    return result
