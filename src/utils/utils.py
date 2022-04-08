@@ -134,9 +134,9 @@ def plot_confusion_matrix(cm, classes,
 
 
 def get_video_paths(data_dir, num_videos):
-    ext = ['mp4', 'avi', 'mkv', 'wmv']    # Add image formats here
+    ext = ['mp4', 'avi', 'mkv','wmv']    # Add image formats here
     files = []
-    [files.extend(glob(data_dir + '*.' + e, recursive=True)) for e in ext]
+    [files.extend(glob(data_dir + '*.' + e,recursive=True)) for e in ext]
     #video_paths = glob(data_dir + "**/*.mp4", recursive=True)
     video_paths = files
     # video_idxs = [2,5,6,7]# [x for x in range(0,num_videos)]  # if num_videos is 3, then video_idxs = [0,1,2] i.e we will test videos at index 0,1,2 in file_names
@@ -144,7 +144,7 @@ def get_video_paths(data_dir, num_videos):
     for i in video_paths:
         file_names.append(os.path.basename(i))
     file_names.sort()
-    # print("videos:",files)
+    #print("videos:",files)
     return file_names, video_paths
 
 
@@ -258,8 +258,7 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
 
     fpv = fpv_list(video_glob)
 
-    print("FPV of the videos that are to be processed:",
-          [fpv[x] for x in video_idxs])
+    print("FPV of the videos that are to be processed:", [fpv[x] for x in video_idxs])
 
     _video_idxs = len(video_idxs)
 
@@ -309,23 +308,22 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
     if(videos_to_skip):
         print(f"Skipped videos with id: {videos_to_skip}")
 
-    if(len(videos_to_skip) > 0):
+    if(len(videos_to_skip)>0):
         print("ID of the videos that have been skipped:", videos_to_skip)
-        if(len(too_large > 0)):
-            print(
-                "ID of the videos that have been skipped as they were too large in size:", too_large)
-        if(len(no_faces > 0)):
-            print(
-                "ID of the videos that have been skipped as no faces were detected:", no_faces)
+        if(len(too_large>0)):
+            print("ID of the videos that have been skipped as they were too large in size:", too_large)
+        if(len(no_faces>0)):
+            print("ID of the videos that have been skipped as no faces were detected:", no_faces)
     else:
         print("No video has been skipped")
-
+            
+    
     print(f"IDs of the videos which were processed: {video_idxs}")
-
+    
     if(not len(video_idxs)):
         print("No videos were processed. Exiting the program")
         return
-
+    
     for ne in tqdm(video_idxs, desc='Annotating videos'):
         if(ne in videos_to_skip):
             continue
@@ -454,12 +452,13 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
     return predictions
 
 
-def get_images_path(data_dir):
 
+def get_images_path(data_dir):
+    
     ext = ['png', 'jpg', 'jpeg']    # Add image formats here
     files = []
-    [files.extend(glob(data_dir + '*.' + e, recursive=True)) for e in ext]
-
+    [files.extend(glob(data_dir + '*.' + e,recursive=True)) for e in ext]
+    
     #image_names = ['{0:04}'.format(num) + ".png" for num in range(0, 2)]
     # all_image_paths = []
     # for i in range(0,2):
@@ -468,7 +467,7 @@ def get_images_path(data_dir):
     return files
 
 
-def test_on_images(path_of_images, transformer, blazeface_dir, device, model, models_loaded, ensemble_models, json_path):
+def test_on_images(path_of_images,transformer,blazeface_dir,device,model,models_loaded,ensemble_models,json_path):
     facedet = BlazeFace().to(device)
     facedet.load_weights(blazeface_dir+"blazeface.pth")
     facedet.load_anchors(blazeface_dir+"anchors.npy")
@@ -476,28 +475,31 @@ def test_on_images(path_of_images, transformer, blazeface_dir, device, model, mo
     c = []
     for i in tqdm(path_of_images, desc='Predicting'):
         im = Image.open(i)
-        im_face = face_extractor.process_image(img=im)
+        im_face =  face_extractor.process_image(img=im)
         im_face = im_face['faces'][0]
-        faces_t = torch.stack([transformer(image=im)['image']
-                              for im in [im_face]])
+        faces_t = torch.stack( [ transformer(image=im)['image'] for im in [im_face] ] )
 
         with torch.no_grad():
             score, faces_pred = ensemble_models(faces_t.to(device))
-
+        
         ensemble_score = sum(list(score.values())) / len(model)
-
-        c.append(float(numberWithoutRounding(ensemble_score, 4)))
-
-    for a, b in enumerate(c):
+        
+        
+        c.append(float(numberWithoutRounding(ensemble_score,4)))
+        
+        
+        
+        
+    for a,b in enumerate(c):
         if b <= 0.3:
             c[a] = 'real'
         else:
             c[a] = 'fake'
 
-    result = dict(zip(path_of_images, c))
-
-    with open(json_path, "w") as outfile:
-        json.dump(result, outfile)
-
+    result = dict(zip(path_of_images,c))
+    
+    with open(json_path,"w") as outfile:
+        json.dump(result,outfile)
+        
     print(f"Prediction results are saved in {json_path}")
     return result
