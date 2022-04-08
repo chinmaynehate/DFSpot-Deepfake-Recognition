@@ -138,14 +138,12 @@ def get_video_paths(data_dir, num_videos):
     files = []
     [files.extend(glob(data_dir + '*.' + e,recursive=True)) for e in ext]
     #video_paths = glob(data_dir + "**/*.mp4", recursive=True)
-    files.sort(reverse=False)
     video_paths = files
     # video_idxs = [2,5,6,7]# [x for x in range(0,num_videos)]  # if num_videos is 3, then video_idxs = [0,1,2] i.e we will test videos at index 0,1,2 in file_names
     file_names = []
     for i in video_paths:
         file_names.append(os.path.basename(i))
-    file_names.sort(reverse=False)
-    print("FILE NAMES", file_names)
+    file_names.sort()
     #print("videos:",files)
     return file_names, video_paths
 
@@ -357,10 +355,18 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
                 num_models = len(model_list)
 
                 p = {}  # contains frame level predictions for each model
+                
+                i = 0
                 for j in predictions_with_frame_level_data[video_glob[ne]][1]:
-                    p[j] = predictions_with_frame_level_data[video_glob[ne]
-                                                             ][1][j][face_count]
-
+                    try:
+                        p[j] = predictions_with_frame_level_data[video_glob[ne]
+                                                                 ][1][j][face_count-1]
+                    except:
+                        i = i + 1
+                        print("skipping")
+                        continue
+                if(i>0):
+                    continue
                 ensemble_pred_score = sum(p.values())/len(p)
 
                 if ensemble_pred_score >= 0.3:
