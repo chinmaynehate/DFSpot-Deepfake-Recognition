@@ -193,13 +193,13 @@ Structure of DeepFake-Spot/ after running prerequisites and installation scripts
 
 1. By running setup.sh(during installation), few sample videos from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_videos/`. To check the authenticity of these videos, run:
 ```sh
-python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ffpp/fake --dataset ffpp --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models --video_id 2 3 4 --annotate True --device 0 --output_dir output/  
+python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ffpp/fake/ --dataset ffpp --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models/ --video_id 2 3 4 --annotate True --device 0 --output_dir output/  
 ```
 The predictions are stored in `output/predictions.csv` and video with frame level annotations of predictions made by individual models and ensemble of models is stored in `output/` folder.
 
 2. Say you have three videos- video1.mp4, video2.mp4 and video3.mp4 and you want to check their authenticity. Place these three videos in the `sample_videos/` folder and run:
 ```sh
-python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ --dataset ffpp --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models --video_id 0 1 2 --annotate True --device 0 --output_dir output/  
+python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ --dataset ffpp --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models/ --video_id 0 1 2 --annotate True --device 0 --output_dir output/  
 ```
 The predictions are stored in `output/predictions.csv` and video with frame level annotations of predictions made by individual models and ensemble of models is stored in `output/` folder.
   

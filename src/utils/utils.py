@@ -149,7 +149,7 @@ def get_video_paths(data_dir, num_videos):
 
 
 def get_model_paths(model, model_dir, dataset, choices):
-    model_paths = glob(model_dir + '/**/*.pth', recursive=True)
+    model_paths = glob(model_dir + '**/*.pth', recursive=True)
     models_for_dataset = []
     for i in model_paths:
         if(i.split("/")[-1].startswith(dataset)):

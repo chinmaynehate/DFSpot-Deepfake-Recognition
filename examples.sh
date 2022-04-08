@@ -22,7 +22,7 @@ python3 spot_deepfakes.py \
     --data_dir ../sample_videos/ \
     --dataset dfdc \
     --model TimmV2 TimmV2ST ViT ViTST \
-    --model_dir ../models \
+    --model_dir ../models/ \
     --video_id 0 1 2 \
     --annotate True
 
@@ -35,46 +35,46 @@ saved. After running this code, the annotated video is stored in the src/output/
 # Some other examples:
 python3 spot_deepfakes.py \
     --media_type video \
-    --data_dir ../sample_videos/ffpp/fake \
+    --data_dir ../sample_videos/ffpp/fake/ \
     --dataset ffpp \
     --model ViT ViTST \
-    --model_dir ../models \
+    --model_dir ../models/ \
     --video_id 1 2 \
     --annotate True
 
 python3 spot_deepfakes.py \
     --media_type video \
-    --data_dir ../sample_videos/celeb/fake \
+    --data_dir ../sample_videos/celeb/fake/ \
     --dataset celeb \
     --model TimmV2 TimmV2ST ViT ViTST \
-    --model_dir ../models \
+    --model_dir ../models/ \
     --video_id 3 \
     --annotate True
 
 python3 spot_deepfakes.py \
     --media_type video \
-    --data_dir ../sample_videos/dfdc/real \
+    --data_dir ../sample_videos/dfdc/real/ \
     --dataset dfdc \
     --model TimmV2ST ViTST \
-    --model_dir ../models \
+    --model_dir ../models/ \
     --video_id 0 1 \
     --annotate True
 
 python3 spot_deepfakes.py \
     --media_type video \
-    --data_dir ../sample_videos/ffpp/fake \
+    --data_dir ../sample_videos/ffpp/fake/ \
     --dataset dfdc \
     --model TimmV2 TimmV2ST ViT ViTST \
-    --model_dir ../models \
+    --model_dir ../models/ \
     --video_id 2 3 \
     --annotate True
 
 python3 spot_deepfakes.py \
     --media_type video \
-    --data_dir ../sample_videos/celeb/real \
+    --data_dir ../sample_videos/celeb/real/ \
     --dataset ffpp \
     --model ViT ViTST \
-    --model_dir ../models \
+    --model_dir ../models/ \
     --video_id 1 \
     --annotate True
 
@@ -90,7 +90,7 @@ python3 spot_deepfakes.py \
     --data_dir ../sample_images/ \
     --dataset ffpp \
     --model TimmV2 TimmV2ST ViT ViTST \
-    --model_dir ../models \
+    --model_dir ../models/ \
     --device 2  
 
 
