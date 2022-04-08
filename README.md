@@ -138,6 +138,8 @@ Follow the Below Instructions for setting the project up on your local Machine. 
    cd DeepFake-Spot
    sudo chmod +x setup.sh
    ```
+The setup.sh file has to be provided a name of a dataset via the -m flag. The options are: dfdc or celeb or ffpp or all.
+If the -m flag is set with either of dfdc or celeb or ffpp, the setup.sh downloads the models trained on that selected dataset. If the -m flag is set with the all option, then all the models trained on each dataset are downloaded. It is advised not to use the all option.
    ```
    ./setup.sh -m celeb
    ```
@@ -190,10 +192,11 @@ Structure of DeepFake-Spot/ after running prerequisites and installation scripts
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-1. By running setup.sh(during installation), few sample videos from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_videos/`. To check the authenticity of these videos, run:
+### For videos
+                                
+1. By running setup.sh(during installation), few sample videos from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_videos/`. Say you ran the setup.sh file with dfdc as the flag option, provide dfdc as the argument for --dataset in the below command. By doing so, the code looks for models trained on the dfdc dataset in the models directory that is supplid by the --model_dir argument. To check the authenticity of these videos, run:
 ```sh
-python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ffpp/fake/ --dataset ffpp --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models/ --video_id 2 3 4 --annotate True --device 0 --output_dir output/  
+python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/dfdc/fake/ --dataset dfdc --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models/ --video_id 2 3 4 --annotate True --device 0 --output_dir output/  
 ```
 The predictions are stored in `output/predictions.csv` and video with frame level annotations of predictions made by individual models and ensemble of models is stored in `output/` folder.
 
@@ -202,8 +205,14 @@ The predictions are stored in `output/predictions.csv` and video with frame leve
 python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ --dataset ffpp --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models/ --video_id 0 1 2 --annotate True --device 0 --output_dir output/  
 ```
 The predictions are stored in `output/predictions.csv` and video with frame level annotations of predictions made by individual models and ensemble of models is stored in `output/` folder.
-  
 
+### For images
+                                
+1. By running setup.sh(during installation), few sample images from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_images/`. To check the authenticity of these images, run:
+```sh
+!python3 spot_deepfakes.py --media_type image --data_dir ../sample_images/ --dataset dfdc --model TimmV2 TimmV2ST ViT ViTST --model_dir ../models  --device 0 --output_dir output/  
+```
+The predictions are stored in `output/img_predictions.json`
  
 **_For more examples, please refer to [examples.sh](https://github.com/chinmaynehate/DeepFake-Spot/blob/master/examples.sh)_**
 
