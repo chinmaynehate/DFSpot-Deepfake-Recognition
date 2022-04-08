@@ -134,12 +134,17 @@ def plot_confusion_matrix(cm, classes,
 
 
 def get_video_paths(data_dir, num_videos):
-    video_paths = glob(data_dir + "/**/*.mp4", recursive=True)
+    ext = ['mp4', 'avi', 'mkv', 'wmv']    # Add image formats here
+    files = []
+    [files.extend(glob(data_dir + '*.' + e, recursive=True)) for e in ext]
+    #video_paths = glob(data_dir + "**/*.mp4", recursive=True)
+    video_paths = files
     # video_idxs = [2,5,6,7]# [x for x in range(0,num_videos)]  # if num_videos is 3, then video_idxs = [0,1,2] i.e we will test videos at index 0,1,2 in file_names
     file_names = []
     for i in video_paths:
         file_names.append(os.path.basename(i))
     file_names.sort()
+    # print("videos:",files)
     return file_names, video_paths
 
 
@@ -253,7 +258,8 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
 
     fpv = fpv_list(video_glob)
 
-    print("FPV", fpv)
+    print("FPV of the videos that are to be processed:",
+          [fpv[x] for x in video_idxs])
 
     _video_idxs = len(video_idxs)
 
@@ -303,10 +309,23 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
     if(videos_to_skip):
         print(f"Skipped videos with id: {videos_to_skip}")
 
-    print("To skip:", videos_to_skip)
-    print("idxs:", video_idxs)
+    if(len(videos_to_skip) > 0):
+        print("ID of the videos that have been skipped:", videos_to_skip)
+        if(len(too_large > 0)):
+            print(
+                "ID of the videos that have been skipped as they were too large in size:", too_large)
+        if(len(no_faces > 0)):
+            print(
+                "ID of the videos that have been skipped as no faces were detected:", no_faces)
+    else:
+        print("No video has been skipped")
+
+    print(f"IDs of the videos which were processed: {video_idxs}")
+
     if(not len(video_idxs)):
+        print("No videos were processed. Exiting the program")
         return
+
     for ne in tqdm(video_idxs, desc='Annotating videos'):
         if(ne in videos_to_skip):
             continue
@@ -436,19 +455,24 @@ def extract_predict_annotate(output_dir, ensemble_models, video_glob, video_idxs
 
 
 def get_images_path(data_dir):
-    image_names = ['{0:04}'.format(num) + ".png" for num in range(0, 1000)]
-    all_image_paths = []
-    for i in range(0, 1000):
-        all_image_paths.append(data_dir+image_names[i])
-    return all_image_paths, image_names
+
+    ext = ['png', 'jpg', 'jpeg']    # Add image formats here
+    files = []
+    [files.extend(glob(data_dir + '*.' + e, recursive=True)) for e in ext]
+
+    #image_names = ['{0:04}'.format(num) + ".png" for num in range(0, 2)]
+    # all_image_paths = []
+    # for i in range(0,2):
+    #     all_image_paths.append(data_dir+image_names[i])
+    # return all_image_paths, image_names ,files
+    return files
 
 
-def test_on_images(path_of_images, imgs, transformer, blazeface_dir, device, model, models_loaded, ensemble_models, json_path):
+def test_on_images(path_of_images, transformer, blazeface_dir, device, model, models_loaded, ensemble_models, json_path):
     facedet = BlazeFace().to(device)
     facedet.load_weights(blazeface_dir+"blazeface.pth")
     facedet.load_anchors(blazeface_dir+"anchors.npy")
     face_extractor = FaceExtractor(facedet=facedet)
-    print("YO", model)
     c = []
     for i in tqdm(path_of_images, desc='Predicting'):
         im = Image.open(i)
@@ -470,7 +494,7 @@ def test_on_images(path_of_images, imgs, transformer, blazeface_dir, device, mod
         else:
             c[a] = 'fake'
 
-    result = dict(zip(imgs, c))
+    result = dict(zip(path_of_images, c))
 
     with open(json_path, "w") as outfile:
         json.dump(result, outfile)

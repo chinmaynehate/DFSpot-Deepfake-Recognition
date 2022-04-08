@@ -109,9 +109,9 @@ def main():
             # pprint.pprint(predictions)
 
     elif(media_type == "image"):
-        img_path, img_names = utils.get_images_path(data_dir)
+        img_path = utils.get_images_path(data_dir)
 
-        predictions = utils.test_on_images(img_path, img_names, transformer, blazeface_dir, device,
+        predictions = utils.test_on_images(img_path, transformer, blazeface_dir, device,
                                            model, models_loaded, ensemble_models, json_path=output_dir+"img_predictions.json")
 
 
