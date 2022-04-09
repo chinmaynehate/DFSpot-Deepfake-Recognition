@@ -30,7 +30,7 @@
   </p>
 </div>
 
-<h3 align="center">⚡️ Try the demo here</h3>
+<h3 align="center">⚡️ Try the demo here ⚡️</h3>
 <div align="center">
 
   <a href="https://colab.research.google.com/drive/1s0e0OO_Xcyw7S81s8GydTDtTQXJvJPpL?usp=sharing">![example1](https://colab.research.google.com/assets/colab-badge.svg)</a>
@@ -93,7 +93,7 @@ PyTorch code for DF-Spot, a model ensemble that determines if an input video/ima
 
 
 
-### Built With
+### :bricks: Built With
 
 * [Python 3.6.9](https://www.python.org/)
 * [PyTorch 1.8.0](https://pytorch.org/)
@@ -105,9 +105,9 @@ PyTorch code for DF-Spot, a model ensemble that determines if an input video/ima
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## ⚡️ Getting Started
 Set up the project on your local machine by following the instructions below. You can also run the demo on Google Colab [here](https://colab.research.google.com/drive/1s0e0OO_Xcyw7S81s8GydTDtTQXJvJPpL?usp=sharing)
-### Prerequisites
+### :heavy_check_mark: Prerequisites
 * Update system and install pip3
    ```sh
    sudo apt update
@@ -141,31 +141,21 @@ Set up the project on your local machine by following the instructions below. Yo
 > **🔔 Note**
 The following command, which runs the setup.sh file, requires the `-m` parameter, which accepts either dfdc, celeb, ffpp, or all as inputs. If the flag -m is used with the option dfdc, setup.sh will download the models trained on the dfdc dataset. The models are currently saved on Google Drive and there appears to be a limit to the number of files that may be downloaded using the command-line utility tool `gdown`. As a result, it is possible that this limit has been reached and you are unable to download the models. If this occurs, try running the script again after 24 hours. You can also manually download the models by visiting the google drive link for the models from the `setup.sh` file.     
 Downloading the models manually is recommended.
-                                
-                                
+                                                            
    ```
-   ./setup.sh -m celeb
+   ./setup.sh -m <dataset>
    ```
-   or
-   ``` 
+For eg. If you want to download models trained on dfdc dataset, then run:                                                            
+   ```
    ./setup.sh -m dfdc
    ```
-   or
-   ```
-   ./setup.sh -m ffpp
-   ```
-   or
-   ```
-   ./setup.sh -m all
-   ```
+  The other options are: celeb, ffpp or all                              
+
                                 
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- USAGE EXAMPLES -->
-### Project file structure
+### :floppy_disk: Project file structure
 After running the requirements, prerequisites and installation scripts, the directory structure of 'DFSpot-Deepfake-Recognition/' is as follows
 ```sh
 |-- assets # contains images & gifs for readme
@@ -192,10 +182,11 @@ After running the requirements, prerequisites and installation scripts, the dire
     |-- spot_deepfakes.py # main()
     |-- utils # contains functions for extraction of faces from videos in sample_videos, loading models, ensemble of models and annotation
 ```
-
+<p align="right">(<a href="#top">back to top</a>)</p>
+                                
 <!-- USAGE EXAMPLES -->
 ## ⚡️ Usage
-### For videos
+### :video_camera: For videos
                                 
 1. When `setup.sh` is executed, a few example videos from the test set of datasets such as DFDC, FFPP, and CelebDF(V2) are saved in `sample videos/` folder. Assume you run the `setup.sh` file with the -m flag option dfdc. If so, then pass dfdc as the `--dataset` argument, and the code will check for models trained on the dfdc dataset in the models directory specified by the `--model dir` argument. Command to check for deepfakes in these videos using models trained on dfdc dataset is:
 ```sh
@@ -209,7 +200,7 @@ python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/ --data
 ```
 The predictions are stored in `output/predictions.csv` and video with frame level annotations of predictions made by individual models and ensemble of models is stored in `output/` folder.
 
-### For images
+### :framed_picture: For images
                                 
 1. By running `setup.sh` during installation, few sample images from test set of datasets like DFDC, FFPP and CelebDF(V2) are saved in `sample_images/`. To check the authenticity of these images, run:
 ```sh
@@ -242,13 +233,16 @@ If you have a suggestion that would make this better, please fork the repo and c
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 <!-- LICENSE -->
 ## ⚠️ License
 
 Distributed under the MIT License. See [`LICENSE`](https://github.com/chinmaynehate/DFSpot-Deepfake-Recognition/blob/master/LICENSE) for more information.
-
+<p align="right">(<a href="#top">back to top</a>)</p>
+                                
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+## :thumbsup: Acknowledgments
 
 * [Deepware](https://github.com/deepware/deepfake-scanner)
 * [Image and Sound Processing Lab - Politecnico di Milano](https://github.com/polimi-ispl/icpr2020dfdc)
