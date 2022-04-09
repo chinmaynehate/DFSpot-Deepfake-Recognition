@@ -87,7 +87,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-PyTorch code for DeepFake-Spot, an ensemble of models to determine if the input video is real or fake. This study proposes an ensemble-based metric learning approach based on a siamese network architecture, in which four models are created starting from a base network to identify deepfakes. This technique has been tested against publicly available datasets such as Celeb-DF (v2), FaceForensics++ and DFDC.
+PyTorch code for DF-Spot, a model ensemble that determines if an input video/image is real or fraudulent. To identify deepfakes, this study proposes an ensemble-based metric learning technique based on a siamese network architecture, in which four models are built beginning from a base network. This method has been validated using publicly available datasets such as Celeb-DF (v2), FaceForensics++, and DFDC.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -106,7 +106,7 @@ PyTorch code for DeepFake-Spot, an ensemble of models to determine if the input 
 
 <!-- GETTING STARTED -->
 ## Getting Started
-Follow the Below Instructions for setting the project up on your local Machine. Alternatively, you can run the demo on colab [here](https://colab.research.google.com/drive/1s0e0OO_Xcyw7S81s8GydTDtTQXJvJPpL?usp=sharing)
+Set up the project on your local machine by following the instructions below. You can also run the demo on Google Colab [here](https://colab.research.google.com/drive/1s0e0OO_Xcyw7S81s8GydTDtTQXJvJPpL?usp=sharing)
 ### Prerequisites
 * Update system and install pip3
    ```sh
@@ -135,11 +135,11 @@ Follow the Below Instructions for setting the project up on your local Machine. 
    ```
 3. Install dependencies
    ```sh
-   cd DeepFake-Spot
+   cd DFSpot-Deepfake-Recognition
    sudo chmod +x setup.sh
    ```
-The setup.sh file has to be provided a name of a dataset via the -m flag. The options are: dfdc or celeb or ffpp or all.
-If the -m flag is set with either of dfdc or celeb or ffpp, the setup.sh downloads the models trained on that selected dataset. If the -m flag is set with the all option, then all the models trained on each dataset are downloaded. It is advised not to use the all option.
+The `-m` flag must be used to specify a dataset name to the [`setup.sh`](https://github.com/chinmaynehate/DFSpot-Deepfake-Recognition/blob/master/setup.sh) file. There are four options: `dfdc`, `celeb`, `ffpp`, or `all`.
+If the `-m` option is used with `dfdc`, `celeb`, or `ffpp`, [`setup.sh`](https://github.com/chinmaynehate/DFSpot-Deepfake-Recognition/blob/master/setup.sh) downloads the models trained on that dataset. When the `-m` flag is used in conjunction with the `all` option, all models trained on each dataset are downloaded. It is not recommended to utilise the `all` option.
    ```
    ./setup.sh -m celeb
    ```
@@ -162,8 +162,8 @@ If the -m flag is set with either of dfdc or celeb or ffpp, the setup.sh downloa
 
 
 <!-- USAGE EXAMPLES -->
-### Repo file structure
-Structure of DeepFake-Spot/ after running prerequisites and installation scripts
+### Project file structure
+After running the requirements, prerequisites and installation scripts, the structure of 'DFSpot-Deepfake-Recognition/' is as follows.
 ```sh
 |-- assets # contains images & gifs for readme
 |-- examples.sh # contains example for running spot_deepfakes.py 
@@ -194,7 +194,7 @@ Structure of DeepFake-Spot/ after running prerequisites and installation scripts
 ## Usage
 ### For videos
                                 
-1. By running setup.sh(during installation), few sample videos from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_videos/`. Say you ran the setup.sh file with dfdc as the flag option, provide dfdc as the argument for --dataset in the below command. By doing so, the code looks for models trained on the dfdc dataset in the models directory that is supplid by the --model_dir argument. To check the authenticity of these videos, run:
+1. By running `setup.sh`, few sample videos from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_videos/`. Say you ran the `setup.sh` file with dfdc as the flag option, provide dfdc as the argument for `--dataset` in the below command. By doing so, the code looks for models trained on the dfdc dataset in the models directory that is supplid by the `--model_dir` argument. To check the authenticity of these videos, run:
 ```sh
 python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/dfdc/fake/ --dataset dfdc --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models/ --video_id 2 3 4 --annotate True --device 0 --output_dir output/  
 ```
@@ -208,10 +208,15 @@ The predictions are stored in `output/predictions.csv` and video with frame leve
 
 ### For images
                                 
-1. By running setup.sh(during installation), few sample images from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_images/`. To check the authenticity of these images, run:
+1. By running `setup.sh` during installation, few sample images from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_images/`. To check the authenticity of these images, run:
 ```sh
-!python3 spot_deepfakes.py --media_type image --data_dir ../sample_images/ --dataset dfdc --model TimmV2 TimmV2ST ViT ViTST --model_dir ../models  --device 0 --output_dir output/  
+python3 spot_deepfakes.py --media_type image --data_dir ../sample_images/ --dataset dfdc --model TimmV2 TimmV2ST ViT ViTST --model_dir ../models  --device 0 --output_dir output/  
 ```
+2. Say you have a few images and you need to check their authenticity. Place them in the `sample_images/` folder and run the following command:
+``` sh
+python3 spot_deepfakes.py --media_type image --data_dir ../sample_images/ --dataset dfdc --model TimmV2 TimmV2ST ViT ViTST --model_dir ../models  --device 0 --output_dir output/  
+```
+                                
 The predictions are stored in `output/img_predictions.json`
  
 **_For more examples, please refer to [examples.sh](https://github.com/chinmaynehate/DeepFake-Spot/blob/master/examples.sh)_**
