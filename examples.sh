@@ -1,7 +1,7 @@
 cd src
 
 : '
-Lets say you have 3 videos: a.mp4, b.mp4 & c.mp4. ou want to check their authenticity. In order to do so, place them in the sample_videos/ folder. 
+Lets say you have 3 videos: a.mp4, b.mp4 & c.mp4 and  you want to check their authenticity. In order to do so, place them in the sample_videos/ folder. 
 Now, you have 3 options: either use models trained on FFPP, DFDC or CelebDF dataset. 
 For each dataset, we have 4 models: EfficientNetV2 (V2), EfficientNetV2 ST (V2 ST), Vision Transformer (ViT) & Vision Transformer ST (VIT ST).
 Consider, you decided to use the models trained on DFDC dataset. So in order to download the models and setup the files, run the setup.sh file by executing
