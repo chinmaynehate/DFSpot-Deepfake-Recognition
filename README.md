@@ -141,7 +141,8 @@ Set up the project on your local machine by following the instructions below. Yo
 ### Note
 The following command, which runs the setup.sh file, requires the `-m` parameter, which accepts either dfdc, celeb, ffpp, or all as inputs. If the flag -m is used with the option dfdc, setup.sh will download the models trained on the dfdc dataset.
 
-The models are currentl saved on Google Drive and there appears to be a limit to the number of files that may be downloaded from Google Drive using the command-line utility tool `gdown`. As a result, it is possible that this limit has been reached and you are unable to download the models. If this occurs, try running the script again after 24 hours. You can also manually download the models by visiting the google drive link for the models from the `setup.sh` file.                                
+The models are currently saved on Google Drive and there appears to be a limit to the number of files that may be downloaded using the command-line utility tool `gdown`. As a result, it is possible that this limit has been reached and you are unable to download the models. If this occurs, try running the script again after 24 hours. You can also manually download the models by visiting the google drive link for the models from the `setup.sh` file.     
+Downloading the models manually is recommended.
                                 
                                 
    ```
