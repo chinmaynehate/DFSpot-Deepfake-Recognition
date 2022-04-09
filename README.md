@@ -30,7 +30,7 @@
   </p>
 </div>
 
-<h3 align="center">Try the demo here</h3>
+<h3 align="center">⚡️ Try the demo here</h3>
 <div align="center">
 
   <a href="https://colab.research.google.com/drive/1s0e0OO_Xcyw7S81s8GydTDtTQXJvJPpL?usp=sharing">![example1](https://colab.research.google.com/assets/colab-badge.svg)</a>
@@ -85,7 +85,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## 📖 About The Project
 
 PyTorch code for DF-Spot, a model ensemble that determines if an input video/image is real or fraudulent. To identify deepfakes, this study proposes an ensemble-based metric learning technique based on a siamese network architecture, in which four models are built beginning from a base network. This method has been validated using publicly available datasets such as Celeb-DF (v2), FaceForensics++, and DFDC.
 
@@ -120,7 +120,7 @@ Set up the project on your local machine by following the instructions below. Yo
    ```
 
 
-### Installation
+### ⚙️ Installation
 
 1. Create a python virtual environment (optional)
    ```sh
@@ -138,10 +138,8 @@ Set up the project on your local machine by following the instructions below. Yo
    cd DFSpot-Deepfake-Recognition
    sudo chmod +x setup.sh
    ```                                
-### Note
-The following command, which runs the setup.sh file, requires the `-m` parameter, which accepts either dfdc, celeb, ffpp, or all as inputs. If the flag -m is used with the option dfdc, setup.sh will download the models trained on the dfdc dataset.
-
-The models are currently saved on Google Drive and there appears to be a limit to the number of files that may be downloaded using the command-line utility tool `gdown`. As a result, it is possible that this limit has been reached and you are unable to download the models. If this occurs, try running the script again after 24 hours. You can also manually download the models by visiting the google drive link for the models from the `setup.sh` file.     
+> **🔔 Note**
+The following command, which runs the setup.sh file, requires the `-m` parameter, which accepts either dfdc, celeb, ffpp, or all as inputs. If the flag -m is used with the option dfdc, setup.sh will download the models trained on the dfdc dataset. The models are currently saved on Google Drive and there appears to be a limit to the number of files that may be downloaded using the command-line utility tool `gdown`. As a result, it is possible that this limit has been reached and you are unable to download the models. If this occurs, try running the script again after 24 hours. You can also manually download the models by visiting the google drive link for the models from the `setup.sh` file.     
 Downloading the models manually is recommended.
                                 
                                 
@@ -196,7 +194,7 @@ After running the requirements, prerequisites and installation scripts, the dire
 ```
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## ⚡️ Usage
 ### For videos
                                 
 1. When `setup.sh` is executed, a few example videos from the test set of datasets such as DFDC, FFPP, and CelebDF(V2) are saved in `sample videos/` folder. Assume you run the `setup.sh` file with the -m flag option dfdc. If so, then pass dfdc as the `--dataset` argument, and the code will check for models trained on the dfdc dataset in the models directory specified by the `--model dir` argument. Command to check for deepfakes in these videos using models trained on dfdc dataset is:
@@ -232,7 +230,7 @@ The predictions are stored in `output/img_predictions.json`
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+## ⭐️ Contributing
 
 Any contributions you make are **greatly appreciated**.
 
@@ -245,7 +243,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 5. Open a Pull Request
 
 <!-- LICENSE -->
-## License
+## ⚠️ License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
