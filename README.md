@@ -137,9 +137,13 @@ Set up the project on your local machine by following the instructions below. Yo
    ```sh
    cd DFSpot-Deepfake-Recognition
    sudo chmod +x setup.sh
-   ```
-The `-m` flag must be used to specify a dataset name to the [`setup.sh`](https://github.com/chinmaynehate/DFSpot-Deepfake-Recognition/blob/master/setup.sh) file. There are four options: `dfdc`, `celeb`, `ffpp`, or `all`.
-If the `-m` option is used with `dfdc`, `celeb`, or `ffpp`, [`setup.sh`](https://github.com/chinmaynehate/DFSpot-Deepfake-Recognition/blob/master/setup.sh) downloads the models trained on that dataset. When the `-m` flag is used in conjunction with the `all` option, all models trained on each dataset are downloaded. It is not recommended to utilise the `all` option.
+   ```                                
+### Note
+The following command, which runs the setup.sh file, requires the `-m` parameter, which accepts either dfdc, celeb, ffpp, or all as inputs. If the flag -m is used with the option dfdc, setup.sh will download the models trained on the dfdc dataset.
+
+The models are currentl saved on Google Drive and there appears to be a limit to the number of files that may be downloaded from Google Drive using the command-line utility tool `gdown`. As a result, it is possible that this limit has been reached and you are unable to download the models. If this occurs, try running the script again after 24 hours. You can also manually download the models by visiting the google drive link for the models from the `setup.sh` file.                                
+                                
+                                
    ```
    ./setup.sh -m celeb
    ```
@@ -163,7 +167,7 @@ If the `-m` option is used with `dfdc`, `celeb`, or `ffpp`, [`setup.sh`](https:/
 
 <!-- USAGE EXAMPLES -->
 ### Project file structure
-After running the requirements, prerequisites and installation scripts, the structure of 'DFSpot-Deepfake-Recognition/' is as follows.
+After running the requirements, prerequisites and installation scripts, the directory structure of 'DFSpot-Deepfake-Recognition/' is as follows
 ```sh
 |-- assets # contains images & gifs for readme
 |-- examples.sh # contains example for running spot_deepfakes.py 
@@ -194,7 +198,7 @@ After running the requirements, prerequisites and installation scripts, the stru
 ## Usage
 ### For videos
                                 
-1. By running `setup.sh`, few sample videos from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_videos/`. Say you ran the `setup.sh` file with dfdc as the flag option, provide dfdc as the argument for `--dataset` in the below command. By doing so, the code looks for models trained on the dfdc dataset in the models directory that is supplid by the `--model_dir` argument. To check the authenticity of these videos, run:
+1. When `setup.sh` is executed, a few example videos from the test set of datasets such as DFDC, FFPP, and CelebDF(V2) are saved in `sample videos/` folder. Assume you run the `setup.sh` file with the -m flag option dfdc. If so, then pass dfdc as the `--dataset` argument, and the code will check for models trained on the dfdc dataset in the models directory specified by the `--model dir` argument. Command to check for deepfakes in these videos using models trained on dfdc dataset is:
 ```sh
 python3 spot_deepfakes.py --media_type video --data_dir ../sample_videos/dfdc/fake/ --dataset dfdc --model TimmV2 TimmV2ST ViT ViTST  --model_dir ../models/ --video_id 2 3 4 --annotate True --device 0 --output_dir output/  
 ```
@@ -208,7 +212,7 @@ The predictions are stored in `output/predictions.csv` and video with frame leve
 
 ### For images
                                 
-1. By running `setup.sh` during installation, few sample images from test set of datasets like DFDC, FFPP and CelebDF(V2) get stored in `sample_images/`. To check the authenticity of these images, run:
+1. By running `setup.sh` during installation, few sample images from test set of datasets like DFDC, FFPP and CelebDF(V2) are saved in `sample_images/`. To check the authenticity of these images, run:
 ```sh
 python3 spot_deepfakes.py --media_type image --data_dir ../sample_images/ --dataset dfdc --model TimmV2 TimmV2ST ViT ViTST --model_dir ../models  --device 0 --output_dir output/  
 ```
