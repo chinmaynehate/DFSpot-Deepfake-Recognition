@@ -245,7 +245,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 <!-- LICENSE -->
 ## ⚠️ License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [`LICENSE`](https://github.com/chinmaynehate/DFSpot-Deepfake-Recognition/blob/master/LICENSE) for more information.
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
@@ -253,6 +253,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 * [Deepware](https://github.com/deepware/deepfake-scanner)
 * [Image and Sound Processing Lab - Politecnico di Milano](https://github.com/polimi-ispl/icpr2020dfdc)
 * [Triplet loss tutorial](https://omoindrot.github.io/triplet-loss)
+* Facebook's DeepFake Detection Challenge (DFDC) dataset [Paper](https://arxiv.org/abs/2006.07397)
+* FaceForensics++ [Paper](https://arxiv.org/abs/1901.08971)
+* Celeb-DF (v2) [Paper](https://arxiv.org/abs/1909.12962) 
+* [Other papers](https://docs.google.com/document/d/1vW7ksUl4JFrQwUJIJ63SSmxxsMK84iVyGbEmjOCh__c/edit?usp=sharing)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
