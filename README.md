@@ -166,8 +166,9 @@ After running the requirements, prerequisites and installation scripts, the dire
 |   |-- ffpp_v2.pth
 |-- README.md
 |-- requirements.txt
+|-- sample_images # contains sample images from test set of ffpp, celebdf & dfdc dataset. Save the images that have to be tested in this folder           
 |-- sample_output_videos # contains sample output videos that are obtained after running the code 
-|-- sample_videos # contains all the sample videos downloaded using gdown and extracted in setup.sh. Save the .mp4 files that have to be tested in this folder
+|-- sample_videos # contains all the sample videos downloaded using gdown and extracted in setup.sh. Save the video files that have to be tested in this folder
 |   |-- abc.mp4 # video whose authenticity has to be tested
 |   |-- pqr.mp4 # video whose authenticity has to be tested
 |-- setup.sh # downloads all the models, sample_videos and installs dependencies
