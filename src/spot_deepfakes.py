@@ -3,7 +3,7 @@ from json.tool import main
 from statistics import mode
 import cv2
 from cv2 import VIDEOWRITER_PROP_FRAMEBYTES
-from utils import utils,ensemble
+from utils import utils, ensemble
 from architectures.fornet import FeatureExtractor
 from architectures import fornet
 from blazeface import FaceExtractor, BlazeFace, VideoReader
@@ -26,7 +26,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--media_type', type=str,
-                        help='Image or Video', choices=['video','image'])
+                        help='Image or Video', choices=['video', 'image'])
     parser.add_argument('--data_dir', type=str,
                         help='Path to the directory where image/video is stored. Eg: ../sample_videos/ffpp/real/', required=True)
     parser.add_argument('--dataset', type=str, help='Image/Video is from which dataset',
@@ -34,17 +34,20 @@ def main():
     parser.add_argument('--model', nargs='+',
                         help="Mention models to use among ['TimmV2','TimmV2ST','ViT','ViTST']. Use this arg multiple times to add multiple models", choices=utils.models, required=True)
     parser.add_argument('--model_dir', type=str, required=True)
-    parser.add_argument('--blazeface_dir',type=str,default='blazeface/')
+    parser.add_argument('--blazeface_dir', type=str, default='blazeface/')
     parser.add_argument('--face_policy', default='scale')
     parser.add_argument('--face_size', type=int, default=224)
     parser.add_argument('--fpv', type=int,
                         help='frames per video to extract', default=32)
     parser.add_argument('--device', type=int, help='GPU device', default=0)
-    parser.add_argument('--n',help='Number of videos to test',type=int,default=2)
-    parser.add_argument('--annotate',type= str, help='Set True to save the video in output/ directory which is annotated with frame level predictions',choices=['True','False'], default='False')
-    parser.add_argument('--output_dir',type=str,help='Path to directory where the annotate video is saved', default='output/')
-    parser.add_argument('--video_id',nargs='+',type=int,help = "Index of the videos in data_dir that have to be checked")
-    
+    parser.add_argument(
+        '--n', help='Number of videos to test', type=int, default=2)
+    parser.add_argument('--annotate', type=str, help='Set True to save the video in output/ directory which is annotated with frame level predictions',
+                        choices=['True', 'False'], default='False')
+    parser.add_argument('--output_dir', type=str,
+                        help='Path to directory where the annotate video is saved', default='output/')
+    parser.add_argument('--video_id', nargs='+', type=int,
+                        help="Index of the videos in data_dir that have to be checked")
 
     args = parser.parse_args()
 
@@ -63,51 +66,51 @@ def main():
     annotate = bool(distutils.util.strtobool(args.annotate))
     output_dir = args.output_dir
     video_idxs = args.video_id
-    
-    info = {'Type of Media: ': media_type, 'Path to media: ': data_dir, 'Dataset chosen: ': dataset, 'Models: ': model, 'Path to the directory of the models: ': model_dir, 'Face policy: ': face_policy, 'Face size: ': face_size, 'Frames per video: ': fpv, 'Device: ': device,'Annotate: ': annotate}
+
+    info = {'Type of Media: ': media_type, 'Path to media: ': data_dir, 'Dataset chosen: ': dataset, 'Models: ': model, 'Path to the directory of the models: ': model_dir,
+            'Face policy: ': face_policy, 'Face size: ': face_size, 'Frames per video: ': fpv, 'Device: ': device, 'Annotate: ': annotate}
     print("Input information:")
     pprint.pprint(info)
 
-    
-    file_names, video_glob = utils.get_video_paths(data_dir, num_videos)    
+    file_names, video_glob = utils.get_video_paths(data_dir, num_videos)
 
-    model_choices = {'v2': 'TimmV2', 'v2st': 'TimmV2ST', 'vit': 'ViT', 'vitst': 'ViTST'}
-    
-    model_paths = utils.get_model_paths(model, model_dir, dataset, choices=model_choices)
+    model_choices = {'v2': 'TimmV2', 'v2st': 'TimmV2ST',
+                     'vit': 'ViT', 'vitst': 'ViTST'}
 
-    
-    models_loaded = utils.load_weights(model_paths,model_choices,device)
+    model_paths = utils.get_model_paths(
+        model, model_dir, dataset, choices=model_choices)
+
+    models_loaded = utils.load_weights(model_paths, model_choices, device)
     pprint.pprint({"Models Loaded": model})
-    
-    ensemble_models = ensemble.ensemble(models_loaded,device)
 
-    
-    transformer = utils.get_transformer(face_policy, face_size, models_loaded[0].get_normalizer(), train=False)
-    
-    
-    if(media_type=='video'):
+    ensemble_models = ensemble.ensemble(models_loaded, device)
+
+    transformer = utils.get_transformer(
+        face_policy, face_size, models_loaded[0].get_normalizer(), train=False)
+
+    if(media_type == 'video'):
         if(annotate):
-            predictions = utils.extract_predict_annotate(output_dir,ensemble_models, video_glob, video_idxs, transformer, blazeface_dir,device, models_loaded)
-            #print("Predictions:")
-            #pprint.pprint(predictions)
+            predictions = utils.extract_predict_annotate(
+                output_dir, ensemble_models, video_glob, video_idxs, transformer, blazeface_dir, device, models_loaded)
+
         else:
-            face_extractor = utils.load_face_extractor(blazeface_dir, device,fpv)
+            face_extractor = utils.load_face_extractor(
+                blazeface_dir, device, fpv)
             print('Face extractor Loaded!')
 
-            faces, faces_frames = utils.extract_faces(data_dir, file_names, video_idxs ,transformer,face_extractor,num_videos,fpv)
+            faces, faces_frames = utils.extract_faces(
+                data_dir, file_names, video_idxs, transformer, face_extractor, num_videos, fpv)
             print("Faces extracted and transformed!")
 
-            predictions, predictions_frames =  utils.predict(ensemble_models,data_dir,file_names,video_idxs,num_videos,faces,faces_frames,model,save_csv=True,true_class=False)
-            #print("Predictions:")
-            #pprint.pprint(predictions)
-            
-            
+            predictions, predictions_frames = utils.predict(
+                ensemble_models, data_dir, file_names, video_idxs, num_videos, faces, faces_frames, model, save_csv=True, true_class=False)
+
     elif(media_type == "image"):
         img_path = utils.get_images_path(data_dir)
-        
-        predictions = utils.test_on_images(img_path,transformer,blazeface_dir,device,model,models_loaded,ensemble_models, json_path = output_dir+"img_predictions.json")
-        
-        
+
+        predictions = utils.test_on_images(img_path, transformer, blazeface_dir, device,
+                                           model, models_loaded, ensemble_models, json_path=output_dir+"img_predictions.json")
+
 
 if __name__ == '__main__':
     main()
