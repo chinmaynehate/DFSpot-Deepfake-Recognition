@@ -78,8 +78,6 @@ python3 spot_deepfakes.py \
     --video_id 1 \
     --annotate True
 
-
-
 : '
 If you want to test authenticity of an image, then place the image in the sample_images folder. And run the below command. The predictions will be stored in src/output/img_predictions.json file.
 
@@ -91,6 +89,4 @@ python3 spot_deepfakes.py \
     --dataset ffpp \
     --model TimmV2 TimmV2ST ViT ViTST \
     --model_dir ../models/ \
-    --device 2  
-
-
+    --device 2
