@@ -1,7 +1,7 @@
 albumentations==0.4.6
 densenet_pytorch==0.2.0
 efficientnet_pytorch==0.7.1
-matplotlib==3.2.2
+matplotlib==3.5.1
 numpy==1.21
 opencv_python
 pandas==1.1.5
