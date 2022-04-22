@@ -4,7 +4,7 @@ efficientnet_pytorch==0.7.1
 matplotlib==3.2.2
 numpy==1.21
 opencv_python
-pandas==1.1.5
+pandas==1.4.2
 Pillow
 scikit_learn
 scipy
