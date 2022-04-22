@@ -1,4 +1,4 @@
-albumentations==0.4.6
+albumentations==1.1.0
 densenet_pytorch==0.2.0
 efficientnet_pytorch==0.7.1
 matplotlib==3.5.1
