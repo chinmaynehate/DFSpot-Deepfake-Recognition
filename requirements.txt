@@ -9,4 +9,4 @@ Pillow
 scikit_learn
 scipy
 timm
-tqdm==4.62.3
+tqdm==4.64.0
