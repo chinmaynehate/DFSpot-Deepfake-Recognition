@@ -52,7 +52,7 @@
 </table>
 
 <div align="center">                                                                                   
-    <strong >Ensemble of 4 models produce the above results on test videos from datasets like Celeb-DF(v2), FaceForensics++ and DFDC </strong> 
+    <strong >Ensemble of 4 models produce the above results on test videos from datasets such as Celeb-DF(v2), FaceForensics++ and DFDC </strong> 
                    <br/>
 </div>                                                                               
                                                                                    
