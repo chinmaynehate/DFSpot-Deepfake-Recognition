@@ -131,7 +131,7 @@ Set up the project on your local machine by following the instructions below. Yo
    ```
 2. Clone the repo
    ```sh
-   https://github.com/chinmaynehate/DeepFake-Spot.git
+   git clone https://github.com/chinmaynehate/DeepFake-Spot.git
    ```
 3. Install dependencies
    ```sh
