@@ -255,7 +255,24 @@ Distributed under the MIT License. See [`LICENSE`](https://github.com/chinmayneh
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## :star: How to cite
+Plain text:
+```
+C. Nehate, P. Dalia, S. Naik and A. Bhan, "Exposing DeepFakes using Siamese Training," 2022 IEEE India Council International Subsections Conference (INDISCON), 2022, pp. 1-6, doi: 10.1109/INDISCON54605.2022.9862825.
+```
 
+Bibtex:
+```bibtex
+@INPROCEEDINGS{9862825,
+  author={Nehate, Chinmay and Dalia, Parth and Naik, Saket and Bhan, Aditya},
+  booktitle={2022 IEEE India Council International Subsections Conference (INDISCON)}, 
+  title={Exposing DeepFakes using Siamese Training}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={1-6},
+  doi={10.1109/INDISCON54605.2022.9862825}}
+```
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
